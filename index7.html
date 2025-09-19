@@ -1,0 +1,644 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hearthfall: A Dark Fantasy Audio Drama</title>
+  <meta name="description" content="Hearthfall is a dark fantasy audio drama of thieves, magic, and hard choices. Listen free and support the show." />
+  <meta property="og:title" content="Hearthfall: A Dark Fantasy Audio Drama" />
+  <meta property="og:description" content="Listen to the Hearthfall audio drama. Seasons, episodes, cast, and how to support the show." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="/assets/og-image.jpg" />
+  <meta name="theme-color" content="#0b0b0c" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b0b0c;      /* background */
+      --paper:#111112;   /* cards */
+      --ink:#eae8e4;     /* primary text */
+      --muted:#bdb7ae;   /* secondary text */
+      --line:#2a2a2a;    /* borders */
+      --brand:#C06C3E;   /* hearth ember */
+      --brand-2:#6c2f1a; /* darker ember */
+      --gold:#d4af37;    /* accent */
+      --header-h:72px;   /* fixed header height for body offset */
+    }
+    @font-face{ font-family:'Zachar'; src:url('assets/fonts/Zachar.woff2') format('woff2'), url('assets/fonts/Zachar.woff') format('woff'); font-weight:400; font-style:normal; font-display:swap; }
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, 'Helvetica Neue', Arial, 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+      color:var(--ink);
+      background:#000;
+      line-height:1.6;
+      padding-top:var(--header-h);
+    }
+    *,*::before,*::after{box-sizing:border-box}
+    /* Fullscreen looping background video */
+    .bg-video{position:fixed; inset:0; width:100%; height:100%; object-fit:cover; z-index:-2; pointer-events:none; background:#000}
+    /* Readability scrim above the video */
+    body::before{content:""; position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:-1; pointer-events:none}
+    @media (prefers-reduced-motion: reduce){
+      .bg-video{display:none}
+      body{background:#000 url('assets/bg-fallback.jpg') center/cover no-repeat fixed}
+    }
+    a{color:inherit}
+    .container{width:min(1100px, 92%); margin-inline:auto}
+    .brand{font-family:'Zachar','Cinzel',serif; letter-spacing:.04em}
+    .btn{display:inline-flex; align-items:center; gap:.6rem; padding:.75rem 1rem; border:1px solid var(--line); border-radius:999px; background:#141415; color:var(--ink); text-decoration:none; font-weight:600}
+    .btn:hover{border-color:var(--gold)}
+    .btn.primary{background:linear-gradient(180deg, var(--brand), var(--brand-2)); border-color:rgba(255,255,255,.1)}
+    .btn.ghost{background:transparent}
+    .chip{display:inline-block; padding:.35rem .6rem; border:1px solid var(--line); border-radius:999px; font-size:.8rem; color:var(--muted)}
+    .section{padding:72px 0}
+    .card{background:var(--paper); border:1px solid var(--line); border-radius:16px; box-shadow: 0 10px 20px rgba(0,0,0,.25)}
+    .grid{display:grid; gap:20px}
+    .grid-2{grid-template-columns: repeat(2, minmax(0,1fr))}
+    .grid-3{grid-template-columns: repeat(3, minmax(0,1fr))}
+    @media (max-width: 900px){ .grid-3{grid-template-columns:1fr 1fr} }
+    @media (max-width: 720px){ .grid-2, .grid-3{grid-template-columns:1fr} }
+    /* --- Header --- */
+    header{position:fixed; top:0; left:0; right:0; z-index:2000; backdrop-filter:saturate(180%) blur(6px); background:rgba(11,11,12,.65); border-bottom:1px solid rgba(255,255,255,.06)}
+    .nav{display:flex; align-items:center; justify-content:space-between; gap:16px; padding:14px 0}
+    .nav a{ text-decoration:none; }
+    .nav-left{display:flex; align-items:center; gap:18px}
+    .logo{display:flex; align-items:center; gap:12px}
+        .logo-img{height:28px; width:auto; display:block}
+    .logo-wordmark{height:22px; width:auto; display:block}
+    @media (max-width:480px){ .logo-wordmark{height:20px} }
+    .logo-text{font-weight:800; font-size:1.05rem}
+    .nav-links{display:flex; gap:14px}
+    .nav-links a{padding:.55rem .8rem; border-radius:10px; color:var(--muted)}
+    .nav-links a.active, .nav-links a:hover{color:var(--ink); background:rgba(255,255,255,.06)}
+    .menu-btn{display:none}
+    /* Hide mobile panel by default on all screen sizes */
+    .mobile-panel{display:none}
+    @media (max-width: 920px){
+      .nav-links{display:none}
+      .menu-btn{display:inline-flex}
+      .mobile-panel{display:none; position:absolute; top:100%; left:0; right:0; background:rgba(12,12,13,.98); border-bottom:1px solid var(--line)}
+      .mobile-panel.open{display:block}
+      .mobile-panel a{display:block; padding:14px 24px; border-top:1px solid var(--line); color:var(--muted); text-decoration:none}
+      .mobile-panel a:hover{background:#171718; color:var(--ink)}
+    }
+    @media (max-width: 920px){ :root{ --header-h:64px; } }
+    /* --- Hero --- */
+    .hero{padding:96px 0 72px; position:relative; overflow:hidden}
+    .hero::before{content:""; position:absolute; inset:-1px; background:none}
+    .hero h1{font-family:'Zachar','Cinzel',serif; font-size: clamp(2rem, 5vw, 3.5rem); line-height:1.1; margin:0 0 14px}
+    .hero p{color:var(--muted); margin:0 0 24px}
+    .hero-wrap{display:grid; grid-template-columns: 1.15fr .85fr; gap:26px}
+    .play-card{padding:20px; display:grid; gap:14px}
+        .video{width:100%; aspect-ratio:16/9; display:block; background:#0f0f10; border-radius:12px}
+    .video-frame{position:relative; width:100%; aspect-ratio:16/9; border-radius:12px; overflow:hidden; background:#0f0f10}
+    .video-frame iframe{position:absolute; inset:0; width:100%; height:100%; border:0}
+    .badge-row{display:flex; gap:10px; flex-wrap:wrap}
+    @media (max-width: 900px){ .hero-wrap{grid-template-columns:1fr} }
+
+    /* --- Sections --- */
+    h2{font-family:'Cinzel', serif; font-size: clamp(1.4rem, 2.8vw, 2.2rem); margin:0 0 10px}
+    .lead{color:var(--muted); margin:0 0 24px}
+
+    /* Anchor offset so sections aren't hidden behind fixed header */
+    main, section{ scroll-margin-top: calc(var(--header-h) + 12px); }
+
+    /* Light sections starting at Store */
+    .section.light{ background:#f6f4f1; color:#1b1b1c; }
+    .section.light h2{ color:#1b1b1c; }
+    .section.light .lead{ color:#4a463f; }
+    /* Light sections starting at Store */
+    .section.light .card{ background:#ffffff; color:#1b1b1c; border:1px solid #e7e3dc; box-shadow:0 10px 24px rgba(0,0,0,.08); }
+    .section.light .product .img{ background:linear-gradient(180deg, #faf9f7, #f1efec); border-top-left-radius:16px; border-top-right-radius:16px; }
+
+    /* Improve readability of text in light cards */
+    .section.light .card p, .section.light .card small{ color:#3e3b35 !important; }
+    .section.light strong{ color:#1b1b1c; }
+
+    /* Seamless dark→light transition above Store */
+    #store.section.light{ position:relative; }
+    #store.section.light::before{ content:none; }
+    .section.light .container{ position:relative; z-index:1; }
+
+    /* Mask out any remaining warm band under About by fading to pure black within the section */
+    #about{ position:relative; }
+        #about .container{ position:relative; z-index:1; }
+
+
+
+    /* --- Seasons --- */
+    .episode-list{display:grid; gap:8px; margin-top:14px}
+    /* Center a single season card and limit width */
+    .season-card {
+      max-width: 1000px;   /* set whatever width you want */
+      width: 100%;         /* give it an explicit width to respect max-width */
+      justify-self: center;/* stop grid from stretching it and center the item */
+      margin: 0 auto;      /* harmless here; keeps it centered if layout changes */
+}
+
+    details{background:#131314; border:1px solid var(--line); border-radius:12px; padding:12px 14px}
+    summary{cursor:pointer; list-style:none; font-weight:600}
+    summary::-webkit-details-marker{display:none}
+
+    /* Episode action buttons & popovers */
+    .btn.sm{padding:.5rem .75rem; font-size:.9rem}
+    .btn-row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+    .popover{position:relative; display:inline-block}
+    .popover-panel{position:absolute; top:calc(100% + 8px); left:0; z-index:40; background:#141415; border:1px solid var(--line); border-radius:12px; padding:12px 14px; min-width:240px; max-width:min(360px, 92vw); display:none; box-shadow:0 10px 20px rgba(0,0,0,.35); color: var(--ink);}
+    .popover:hover .popover-panel, .popover:focus-within .popover-panel, .popover.open .popover-panel{display:block}
+    .popover-panel strong{display:block; margin-bottom:.25rem; color:var(--muted)}
+    .popover-panel ul{margin:.4rem 0 0; padding-left:1.1rem}
+
+
+    /* --- About --- */
+    .about-grid{display:grid; grid-template-columns: 1fr 1fr; gap:24px}
+    @media (max-width: 900px){ .about-grid{grid-template-columns:1fr} }
+    .bio{display:flex; gap:16px}
+    .avatar{width:64px; height:64px; border-radius:50%; background:#222; flex:none}
+
+    /* Scrollable right column for bios */
+    .about-bios{ max-height: clamp(360px, 55vh, 560px); overflow-y: auto; padding-right:8px; position:relative; scrollbar-color:#2a2a2a transparent; scrollbar-width:thin; }
+    .about-bios::-webkit-scrollbar{ width:10px; }
+    .about-bios::-webkit-scrollbar-track{ background:transparent; }
+    .about-bios::-webkit-scrollbar-thumb{ background:#2a2a2a; border-radius:12px; border:2px solid transparent; }
+    @media (max-width: 900px){ .about-bios{ max-height:none; overflow:visible; padding-right:0; } }
+    img.avatar{width:64px; height:64px; border-radius:50%; object-fit:cover; flex:none}
+
+    /* --- Store --- */
+    .product{display:flex; flex-direction:column}
+    .product .img{aspect-ratio: 4/3; border-bottom:1px solid var(--line); background:linear-gradient(180deg, #1a1a1b, #101011); border-top-left-radius:16px; border-top-right-radius:16px}
+    .price{color:var(--gold); font-weight:700}
+
+    /* --- FAQ --- */
+    .faq details{padding:14px 16px; color: var(--ink);} 
+    .faq summary{ color: var(--ink); }
+    /* Ensure body text inside details is light, even if inline styles set muted */
+    .faq details p{ color: var(--ink) !important; }
+
+    /* Light pilled FAQ in light sections */
+    .section.light .faq details{ background:#ffffff; color:#1b1b1c; border:1px solid #e7e3dc; }
+    .section.light .faq summary{ color:#1b1b1c; }
+    .section.light .faq details p{ color:#3e3b35 !important; }
+
+    /* --- Support --- */
+    .support{display:grid; grid-template-columns: 1.1fr .9fr; gap:24px}
+    #support form .btn.primary{ width:100%; box-sizing:border-box; }
+    #support form #email::placeholder{ color:#8b877f; }
+
+    /* Make Support chip and Ghost button match body text color on light cards */
+    .section.light .chip{ color:#3e3b35; border-color:#d8d3cc; }
+    .section.light .btn.ghost{ color:#3e3b35; border-color:#d8d3cc; background:transparent; }
+    .section.light .btn.ghost:hover{ border-color:#9b968e; }
+
+    @media (max-width: 900px){ .support{grid-template-columns:1fr} }
+
+    /* --- Footer --- */
+    footer{padding:36px 0; border-top:1px solid var(--line); color:var(--muted)}
+    .social{display:flex; gap:12px}
+    .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0}
+
+    /* utility */
+    .mt-1{margin-top:.25rem} .mt-2{margin-top:.5rem} .mt-3{margin-top:.75rem} .mt-4{margin-top:1rem} .mt-6{margin-top:1.5rem}
+  </style>
+  <!-- Preload self-hosted Zachar webfont (add this file to /assets/fonts) -->
+  <link rel="preload" href="assets/fonts/Zachar.woff2" as="font" type="font/woff2" crossorigin>
+</head>
+<body>
+  <a class="sr-only" href="#home">Skip to content</a>
+
+  <!-- Background video (drop your files in /assets) -->
+  <video class="bg-video" autoplay muted loop playsinline preload="auto" poster="assets/bg-fallback.jpg">
+    <source src="assets/bg.mov" type="video/quicktime" />
+    <source src="assets/bg.mp4" type="video/mp4" />
+    <source src="assets/bg.webm" type="video/webm" />
+  </video>
+
+  <header>
+    <div class="container nav">
+      <div class="nav-left">
+        <a href="#home" class="logo" aria-label="Hearthfall home">
+          <img class="logo-img" src="assets/logo-mark.svg" alt="" />
+          <img class="logo-wordmark" src="assets/hearthfall-wordmark.svg" alt="Hearthfall" />
+        </a>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="#home" data-nav>Home</a>
+          <a href="#seasons" data-nav>Seasons</a>
+          <a href="#about" data-nav>About Us</a>
+          <a href="#store" data-nav>Store</a>
+          <a href="#faq" data-nav>FAQ</a>
+          <a href="#support" data-nav>Support Us</a>
+        </nav>
+      </div>
+      <div class="nav-right">
+        <a class="btn ghost" href="#support">Listen & Support</a>
+        <button class="btn ghost menu-btn" aria-expanded="false" aria-controls="mobileNav">☰</button>
+      </div>
+    </div>
+    <div id="mobileNav" class="mobile-panel" role="dialog" aria-label="Mobile navigation">
+      <a href="#home">Home</a>
+      <a href="#seasons">Seasons</a>
+      <a href="#about">About Us</a>
+      <a href="#store">Store</a>
+      <a href="#faq">FAQ</a>
+      <a href="#support">Support Us</a>
+    </div>
+  </header>
+
+  <main id="home" class="hero">
+    <div class="container hero-wrap">
+      <div>
+        <span class="chip">A Dark Fantasy Audio Drama</span>
+        <h1 class="brand">Hearthfall</h1>
+        <p>Honor. Deceit. Ambition. <em>Hearthfall</em> is a cinematic, immersive audio drama of hard choices and darker consequences.</p>
+        <p><strong>Two-part, special pilot out now! Season 1 debutes Summer 2026.</strong></p>
+        <div class="badge-row">
+          <a class="btn" href="#" aria-label="Listen on Spotify">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0a12 12 0 1012 12A12 12 0 0012 0zm5.5 17.2a.8.8 0 01-1.1.3 13.2 13.2 0 00-7-.9 13.5 13.5 0 00-3.4.6.8.8 0 01-.5-1.5 14.9 14.9 0 013.8-.6 14.8 14.8 0 017.9 1 .8.8 0 01.3 1.1zm1.4-3.5a1 1 0 01-1.3.4 16.9 16.9 0 00-9.5-1.1 16.2 16.2 0 00-3.9.8 1 1 0 11-.6-1.9 18.5 18.5 0 014.4-.9 18.8 18.8 0 0110.6 1.2 1 1 0 01.3 1.5zm.3-3.7a1.2 1.2 0 01-1.6.5 20.7 20.7 0 00-11.4-1.3 20.1 20.1 0 00-4.7 1 .12.12 0 01-.09 0 1.2 1.2 0 01-.88-2.2 22.7 22.7 0 015.4-1.1 23 23 0 0112.6 1.5 1.2 1.2 0 01.59 1.6z"/></svg>
+            <span>Spotify</span>
+          </a>
+          <a class="btn" href="#" aria-label="Listen on Apple Podcasts">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0a12 12 0 1012 12A12 12 0 0012 0zm0 4.5a4.9 4.9 0 11-4.9 4.9A4.9 4.9 0 0112 4.5zm0 10.1a7.9 7.9 0 00-5.4 2 .8.8 0 00.5 1.4h9.7a.8.8 0 00.5-1.4 7.9 7.9 0 00-5.4-2z"/></svg>
+            <span>Apple Podcasts</span>
+          </a>
+          <a class="btn" href="#" aria-label="RSS feed"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.5 15.8A2.2 2.2 0 106.7 18a2.2 2.2 0 00-2.2-2.2zm-.9-5.6a.9.9 0 00-.9.9v1.6a.9.9 0 00.9.9A7.4 7.4 0 0111 21.1a.9.9 0 00.9-.9v-1.6a.9.9 0 00-.9-.9A5 5 0 013.6 10.2zm0-5.6a.9.9 0 00-.9.9v1.6a.9.9 0 00.9.9A12.9 12.9 0 0116.2 21.1a.9.9 0 00.9-.9v-1.6a.9.9 0 00-.9-.9A10.5 10.5 0 013.6 4.6z"/></svg><span>RSS</span></a>
+        </div>
+        <div class="mt-3">
+          <a class="btn primary" href="#seasons">Start with Season 1</a>
+          <a class="btn ghost" href="#support">Support the Show</a>
+        </div>
+      </div>
+      <div class="card play-card" aria-label="Featured episode player">
+        <div>
+          <div class="chip">Featured</div>
+          <h3 class="mt-2" style="margin:0">Hearthfall Announcement Trailer</h3>
+          <p class="mt-1" style="color:var(--muted); margin:0">Two thieves. A powerful relic. Unexpected peril. Hear the first sparks of <em>Hearthfall</em>.</p>
+        </div>
+        <div class="video-frame">
+          <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/sEVQlNIayDw?si=HH-sm8fu7v90McjQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+        <small style="color:var(--muted)">Tip: replace <code>YOUTUBE_VIDEO_ID</code> in the embed URL. Example: for <code>https://www.youtube.com/watch?v=dQw4w9WgXcQ</code>, the ID is <code>dQw4w9WgXcQ</code>.</small>
+      </div>
+    </div>
+  </main>
+
+  <section id="seasons" class="section">
+    <div class="container">
+      <h2>Seasons & Episodes</h2>
+      <p class="lead">Browse the story arc by season. Each episode page includes a synopsis, link to listen, transcript, content warning, and cast.</p>
+
+      <div class="grid">
+        <!-- Add more profiles by duplicating a .card block below. For headshots, replace the placeholder avatar div with an image:
+             <img class='avatar' src='assets/profiles/first-last.jpg' alt='First Last portrait' /> -->
+        <div class="card season-card" style="padding:18px">
+          <div class="chip">Season 1</div>
+          <h3 class="mt-2">Ash & Oath</h3>
+          <p class="mt-1" style="color:var(--muted)">The forsaken, the eternal, the bound. Hearthfall gives no refuge, only consequence.</p>
+          <div class="episode-list mt-2">
+            <details>
+              <summary>Ep 1 (Part 1) · Rats In The Tower</summary>
+              <p class="mt-1" style="color:var(--muted)">Two thieves' descend upon a mage's tower, unaware of the peril they may find.</p>
+              <div class="btn-row mt-2">
+                <a class="btn sm" href="https://pod.link/hearthfall" target="_blank" rel="noopener">Listen</a>
+                <a class="btn sm" href="assets/transcripts/s01e01.pdf" target="_blank" rel="noopener">Transcript</a>
+                <span class="popover">
+                  <button type="button" class="btn sm ghost">Content Warning</button>
+                  <div class="popover-panel" role="tooltip">
+                    <strong>Content Warnings</strong>
+                    <ul>
+                      <li>Graphic Violence</li>
+                      <li>Suggestive Themes</li>
+                      <li>Strong Language</li>
+                    </ul>
+                  </div>
+                </span>
+                <span class="popover">
+                  <button type="button" class="btn sm ghost">Cast</button>
+                  <div class="popover-panel" role="tooltip">
+                    <strong>Cast</strong>
+                    <ul>
+                      <li>Ilya — Chris Tester</li>
+                      <li>Gentry — Shaun Mendum</li>
+                      <li>Davos — Ian Russell</li>
+                      <li>Narrator — Sarah Nightingale</li>
+                    </ul>
+                  </div>
+                </span>
+              </div>
+            </details>
+            <details>
+              <summary>Ep 1 (Part 2) · Rats In The Tower</summary>
+              <p class="mt-1" style="color:var(--muted)">Suspicion lies thick upon the air. Time is running out for Gentry and Ilya, in more ways than one.</p>
+              <div class="btn-row mt-2">
+                <a class="btn sm" href="https://pod.link/hearthfall" target="_blank" rel="noopener">Listen</a>
+                <a class="btn sm" href="assets/transcripts/s01e02.pdf" target="_blank" rel="noopener">Transcript</a>
+                <span class="popover">
+                  <button type="button" class="btn sm ghost">Content Warning</button>
+                  <div class="popover-panel" role="tooltip">
+                    <strong>Content Warnings</strong>
+                    <ul>
+                      <li>Graphic Violence</li>
+                      <li>Strong Language</li>
+                    </ul>
+                  </div>
+                </span>
+                <span class="popover">
+                  <button type="button" class="btn sm ghost">Cast</button>
+                  <div class="popover-panel" role="tooltip">
+                    <strong>Cast</strong>
+                    <ul>
+                      <li>Ilya — Chris Tester</li>
+                      <li>Gentry — Shaun Mendum</li>
+                      <li>Davos — Ian Russell</li>
+                      <li>Narrator — Sarah Nightingale</li>
+                    </ul>
+                  </div>
+                </span>
+              </div>
+            </details>
+            <details>
+              <summary>Ep 2 - 10 · Coming Summer 2026</summary>
+              <p class="mt-1" style="color:var(--muted)">  .</p>
+              <div class="btn-row mt-2">
+                <a class="btn sm" href="https://pod.link/hearthfall" target="_blank" rel="noopener">Listen</a>
+                <a class="btn sm" href="assets/transcripts/s01e03.pdf" target="_blank" rel="noopener">Transcript</a>
+                <span class="popover">
+                  <button type="button" class="btn sm ghost">Content Warning</button>
+                  <div class="popover-panel" role="tooltip">
+                    <strong>Content Warnings</strong>
+                    <ul>
+                      <li>  </li>
+                      <li>  </li>
+                    </ul>
+                  </div>
+                </span>
+                <span class="popover">
+                  <button type="button" class="btn sm ghost">Cast</button>
+                  <div class="popover-panel" role="tooltip">
+                    <strong>Cast</strong>
+                    <ul>
+                      <li>  </li>
+                      <li>  </li>
+                      <li>  </li>
+                    </ul>
+                  </div>
+                </span>
+              </div>
+            </details>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="section">
+    <div class="container about-grid">
+      <div>
+        <h2>About Us</h2>
+        <p class="lead"><em>Hearthfall</em> is crafted with passion — an original score, layered sound design, and character-driven storytelling.</p>
+        <p>Recorded worldwide and produced in Colorado, USA. Written and directed by the Hearthfall team. Voiced by a star‑studded ensemble cast. Built with love for dark fantasy, heists, and hard moral choices.</p>
+        <div class="mt-3" style="display:flex; gap:10px; flex-wrap:wrap">
+          <a class="btn primary" href="#support">Sponsor an Episode</a>
+          <a class="btn ghost" href="#support">Contact</a>
+        </div>
+      </div>
+      <div class="grid about-bios">
+        <div class="card" style="padding:16px">
+          <div class="bio">
+            <div class="avatar" aria-hidden="true"></div>
+            <div>
+              <strong>Brian Kelly</strong>
+              <div style="color:var(--muted)">Creator · Writer · Audio Lead</div>
+              <p class="mt-2" style="margin:0">Wwise‑certified audio professional blending cinematic scoring with grounded, textural sound worlds.</p>
+            </div>
+          </div>
+        </div>
+        <div class="card" style="padding:16px">
+          <div class="bio">
+            <div class="avatar" aria-hidden="true"></div>
+            <div>
+              <strong>Mackenzie Kelly</strong>
+              <div style="color:var(--muted)">Editor · Co-writer</div>
+              <p class="mt-2" style="margin:0">Talented voice actors and collaborators who bring Embergate to life. Full credits on each episode page.</p>
+            </div>
+          </div>
+        </div>
+        <div class="card" style="padding:16px">
+          <div class="bio">
+            <div class="avatar" aria-hidden="true"></div>
+            <div>
+              <strong>Sarah Nightingale</strong>
+              <div style="color:var(--muted)">Ensemble</div>
+              <p class="mt-2" style="margin:0">Talented voice actors and collaborators who bring Embergate to life. Full credits on each episode page.</p>
+            </div>
+          </div>
+        </div>
+        <div class="card" style="padding:16px">
+          <div class="bio">
+            <div class="avatar" aria-hidden="true"></div>
+            <div>
+              <strong>Sarah Nightingale</strong>
+              <div style="color:var(--muted)">Ensemble</div>
+              <p class="mt-2" style="margin:0">Talented voice actors and collaborators who bring Embergate to life. Full credits on each episode page.</p>
+            </div>
+          </div>
+        </div>
+        <div class="card" style="padding:16px">
+          <div class="bio">
+            <div class="avatar" aria-hidden="true"></div>
+            <div>
+              <strong>Sarah Nightingale</strong>
+              <div style="color:var(--muted)">Ensemble</div>
+              <p class="mt-2" style="margin:0">Talented voice actors and collaborators who bring Embergate to life. Full credits on each episode page.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="store" class="section light">
+    <div class="container">
+      <h2>Store</h2>
+      <p class="lead">Merch, digital OST, and supporter‑only extras. These cards can link to Gumroad, Ko‑fi Shop, Etsy, or Itch.io—no monthly subscription needed.</p>
+      <div class="grid grid-3 mt-2">
+        <div class="card product">
+          <div class="img" role="img" aria-label="Hearthfall Original Soundtrack placeholder image"></div>
+          <div style="padding:16px">
+            <strong>Hearthfall Original Soundtrack (Vol. 1)</strong>
+            <div class="mt-1 price">$8</div>
+            <p class="mt-2" style="color:var(--muted)">High‑quality MP3/FLAC. Includes bonus cue “Embergate Nights”.</p>
+            <a class="btn primary" href="#">Buy on Gumroad</a>
+          </div>
+        </div>
+        <div class="card product">
+          <div class="img" role="img" aria-label="Wax Seal Tee placeholder"></div>
+          <div style="padding:16px">
+            <strong>Wax‑Seal Emblem Tee</strong>
+            <div class="mt-1 price">$22</div>
+            <p class="mt-2" style="color:var(--muted)">Soft black tee with the Hearthfall emblem.</p>
+            <a class="btn primary" href="#">Buy on Ko‑fi Shop</a>
+          </div>
+        </div>
+        <div class="card product">
+          <div class="img" role="img" aria-label="Poster placeholder"></div>
+          <div style="padding:16px">
+            <strong>Limited Art Poster</strong>
+            <div class="mt-1 price">$18</div>
+            <p class="mt-2" style="color:var(--muted)">11×17 matte print. Numbered run.</p>
+            <a class="btn primary" href="#">Buy on Etsy</a>
+          </div>
+        </div>
+      </div>
+      <small style="color:var(--muted)" class="mt-2">Replace the links with your store URLs; images can be added to <code>/assets/</code>.</small>
+    </div>
+  </section>
+
+  <section id="faq" class="section light">
+    <div class="container">
+      <h2>FAQ</h2>
+      <div class="grid">
+        <div class="card faq" style="padding:12px">
+          <details open>
+            <summary>Is Hearthfall free to listen?</summary>
+            <p class="mt-2" style="color:var(--muted)">Yes! Episodes are free on all major podcast platforms and via our RSS feed. Supporting us helps keep the show ad‑light and independent.</p>
+          </details>
+          <details>
+            <summary>Where can I listen?</summary>
+            <p class="mt-2" style="color:var(--muted)">Spotify, Apple Podcasts, Google Podcasts, Pocket Casts, and direct RSS. Use the buttons at the top of the page.</p>
+          </details>
+          <details>
+            <summary>Will there be transcripts?</summary>
+            <p class="mt-2" style="color:var(--muted)">Yes—each episode page will include a transcript for accessibility.</p>
+          </details>
+          <details>
+            <summary>How can I support the show without buying merch?</summary>
+            <p class="mt-2" style="color:var(--muted)">Share the podcast, leave reviews, and consider a one‑time tip or monthly pledge. It makes a big difference.</p>
+          </details>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="support" class="section light">
+    <div class="container support">
+      <div class="card" style="padding:22px">
+        <div class="chip">Support Us</div>
+        <h3 class="mt-2">Keep the fire burning</h3>
+        <p class="mt-2" style="color:var(--muted)">If you enjoy the show, fuel future seasons with a pledge or one‑time tip. Perks include early access, OST downloads, behind‑the‑scenes, and your name in the credits.</p>
+        <div class="mt-3" style="display:flex; gap:10px; flex-wrap:wrap">
+          <a class="btn primary" href="#">Join on Patreon</a>
+          <a class="btn" href="#">Tip via Ko‑fi</a>
+          <a class="btn ghost" href="#">Buy Direct (Gumroad)</a>
+        </div>
+      </div>
+      <div class="card" style="padding:22px">
+        <h3 class="mt-1">Newsletter</h3>
+        <p class="mt-2" style="color:var(--muted)">Get new episode alerts and exclusive music drops. We email sparingly.</p>
+        <form class="mt-2" action="#" method="post" onsubmit="alert('Replace action with your email service (Buttondown/Mailchimp).'); return false;">
+          <label class="sr-only" for="email">Email</label>
+          <input id="email" name="email" type="email" required placeholder="you@example.com" style="width:100%; box-sizing:border-box; padding:12px 14px; border-radius:12px; border:1px solid #d8d3cc; background:#ffffff; color:#1b1b1c" />
+          <button type="submit" class="btn primary mt-2" style="width:100%">Subscribe</button>
+        </form>
+        <small class="mt-2" style="display:block; color:var(--muted)">Swap this form for your real provider embed.</small>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container" style="display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap">
+      <div>
+        <span class="brand">Hearthfall</span> · <span id="year"></span>
+        <div style="color:var(--muted); font-size:.9rem">A Dark Fantasy Audio Drama</div>
+      </div>
+      <div class="social" aria-label="Social links">
+        <a class="btn ghost" href="#" aria-label="Twitter/X">X</a>
+        <a class="btn ghost" href="#" aria-label="YouTube">YouTube</a>
+        <a class="btn ghost" href="#" aria-label="Instagram">Instagram</a>
+        <a class="btn ghost" href="#" aria-label="Email">Email</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile navigation toggle
+    const menuBtn = document.querySelector('.menu-btn');
+    const mobile = document.getElementById('mobileNav');
+    if(menuBtn){
+      menuBtn.addEventListener('click', () => {
+        const open = mobile.classList.toggle('open');
+        menuBtn.setAttribute('aria-expanded', String(open));
+      });
+      mobile.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+        mobile.classList.remove('open');
+        menuBtn.setAttribute('aria-expanded', 'false');
+      }));
+    }
+
+    // Smooth scroll & active link highlighting
+    const navLinks = document.querySelectorAll('[data-nav]');
+    const secIds = ['home','seasons','about','store','faq','support'];
+    const secs = secIds.map(id=> document.getElementById(id)).filter(Boolean);
+
+    function setActive(id){
+      navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+    }
+
+    const obs = new IntersectionObserver((entries)=>{
+      entries.forEach(e => { if(e.isIntersecting){ setActive(e.target.id); } });
+    }, {rootMargin: '-40% 0px -55% 0px', threshold: 0});
+    secs.forEach(s => s && obs.observe(s));
+    // Popover toggle for touch devices
+    document.querySelectorAll('.popover > button').forEach(btn => {
+      btn.setAttribute('aria-haspopup','dialog');
+      btn.setAttribute('aria-expanded','false');
+      btn.addEventListener('click', (e) => {
+        const p = btn.parentElement;
+        const open = p.classList.toggle('open');
+        btn.setAttribute('aria-expanded', String(open));
+      });
+    });
+
+    // Close popovers when clicking outside
+    document.addEventListener('click', (e) => {
+      document.querySelectorAll('.popover.open').forEach(p => {
+        if(!p.contains(e.target)){
+          p.classList.remove('open');
+          const b = p.querySelector('button');
+          if(b) b.setAttribute('aria-expanded','false');
+        }
+      });
+    });
+
+    // Footer year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+
+  <!--
+  =============================
+  QUICK START (no subscription)
+  =============================
+  1) Save this file as index.html
+  2) Create an /assets folder next to it and add images/audio (e.g., hearthfall-teaser.mp3)
+  3) Open index.html in a browser to preview locally.
+
+  DEPLOY FOR FREE
+  - GitHub Pages (static hosting)
+    a) Create a new repo and upload index.html + /assets
+    b) In the repo: Settings → Pages → Deploy from main branch → root
+    c) Your site appears at https://<username>.github.io/<repo>/
+  - Netlify / Cloudflare Pages / Vercel
+    a) Drag‑and‑drop this folder into their dashboard (free tiers available)
+
+  CUSTOM DOMAIN (optional, low cost)
+  - Buy a domain from Cloudflare Registrar or Namecheap
+  - Point DNS to your host (Netlify, GitHub Pages, etc.)
+
+  CUSTOMIZE
+  - Replace copy, links, and placeholders
+  - Update store buttons to Gumroad/Ko‑fi/Etsy/Itch URLs
+  - Swap newsletter form with Buttondown or Mailchimp embed
+  - Add episode subpages later by creating episode-1.html, etc., and linking from the details blocks
+  -->
+</body>
+</html>
