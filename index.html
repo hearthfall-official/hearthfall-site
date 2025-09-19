@@ -209,9 +209,9 @@
 
   <!-- Background video (drop your files in /assets) -->
   <video class="bg-video" autoplay muted loop playsinline preload="auto" poster="assets/bg-fallback.jpg">
-    <source src="assets/bg.mp4" type="video/mp4" />
-    <source src="assets/bg.webm" type="video/webm" />
-  </video>
+  <source src="assets/bg.webm" type='video/webm; codecs="vp9,opus"'>
+  <source src="assets/bg.mp4"  type='video/mp4; codecs="avc1.42E01E,mp4a.40.2"'>
+</video>
 
   <header>
     <div class="container nav">
